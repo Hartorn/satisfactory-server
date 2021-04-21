@@ -1,0 +1,22 @@
+version: '3'
+services:
+    satisfactory-server:
+        container_name: 'satisfactory-server'
+        hostname: 'satisfactory-server'
+        build:
+            context: .
+            args:
+                STEAMUSER: STEAM_LOGIN
+                STEAMPWD: STEAM_PASSWORD
+                STEAMCODE: # STEAM_GUARD_CODE
+                STEAMBETA: "false"
+        image: 'ghcr.io/satisfactory-server:latest'
+        # environment:
+        #     - STEAMUSER=
+        #     - STEAMPWD=#
+        #     - STEAMCODE=
+        ports:
+            - '7777:7777/udp'
+        volumes:
+            - './local-game/savefiles:/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved/common'
+        # restart: unless-stopped

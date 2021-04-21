@@ -1,0 +1,79 @@
+name: Build Satisfactory server image
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    inputs:
+      STEAM_GUARD_TOKEN:
+        description: 'Steam Guard Code'     
+        required: False
+        default: ""
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build-and-push-image:
+    #permissions:
+    #  contents: read
+    #  packages: write
+    runs-on: ubuntu-latest 
+    steps:
+    - name: Testing inputs
+      run: |
+        echo "Masking TOKEN"
+        echo "::add-mask::${{ github.event.inputs.STEAM_GUARD_TOKEN }}"
+    # - name: Set up QEMU
+    #   uses: docker/setup-qemu-action@v1
+    # - name: Set up Docker Buildx
+    #   uses: docker/setup-buildx-action@v1
+    - name: Check disk space
+      run: | 
+        df -h
+    - name: List installed packages
+      run: |
+        apt list --installed
+        apt list --installed | wc -l
+    - name: Free disk space
+      run: |
+        sudo swapoff -a
+        sudo rm -f /swapfile
+        sudo apt remove -y \
+          alsa-topology-conf alsa-ucm-conf \
+          adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot \
+          ant apache2 aspnetcore-runtime-3.1 aspnetcore-runtime-5.0 aspnetcore-targeting-pack-3.1 aspnetcore-targeting-pack-5.0 azure-cli \
+          clang-10 clang-11 clang-9 cpp-10 cpp-9 cpp g++-10 g++-9 g++ gcc-10 gcc-9 gcc ghc-9.0.1 ghc-8.10.4 gh \
+          javascript-common libmono-system-core4.0-cil mono-runtime-common llvm-9-runtime llvm-10-runtime llvm-11-runtime mercurial \
+          php7.4-common php8.0-common php8.0 php7.4 postgresql-13 postgresql-client-common postgresql python2 python3 ruby-full ruby \
+          mysql-server mongodb-org mongodb-org-server nginx nginx-common packages-microsoft-prod \
+          linux-cloud-tools-common kubectl google-chrome-stable x11proto-core-dev x11proto-dev perl \
+          unixodbc unixodbc-dev vim-common x11-common
+        sudo apt autoremove -y
+        sudo apt autoclean -y
+        sudo rm -rf /usr/local/lib/android
+        docker rmi $(docker image ls -aq)
+    - name: Check new disk space
+      run: | 
+        df -h
+    - name: List remaning installed packages
+      run: |
+        apt list --installed
+        apt list --installed | wc -l
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1 
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Build container image
+      uses: docker/build-push-action@v2
+      with: 
+        context: .
+        push: true
+        tags: ghcr.io/hartorn/satisfactory-server:latest
+        build-args: STEAMBETA=False
+        secrets: |
+          "steam_user=${{ secrets.STEAM_USER }}"
+          "steam_password=${{ secrets.STEAM_PASSWORD }}"
+          "steam_guard_code=${{ github.event.inputs.STEAM_GUARD_TOKEN }}"
