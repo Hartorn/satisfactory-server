@@ -37,20 +37,21 @@ jobs:
       run: |
         sudo swapoff -a
         sudo rm -f /swapfile
-        sudo apt remove -y \
-          alsa-topology-conf alsa-ucm-conf \
-          adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot \
-          ant apache2 aspnetcore-runtime-3.1 aspnetcore-runtime-5.0 aspnetcore-targeting-pack-3.1 aspnetcore-targeting-pack-5.0 azure-cli \
-          clang-10 clang-11 clang-9 cpp-10 cpp-9 cpp g++-10 g++-9 g++ gcc-10 gcc-9 gcc ghc-9.0.1 ghc-8.10.4 gh \
-          javascript-common libmono-system-core4.0-cil mono-runtime-common llvm-9-runtime llvm-10-runtime llvm-11-runtime mercurial \
-          php7.4-common php8.0-common php8.0 php7.4 postgresql-13 postgresql-client-common postgresql python2 python3 ruby-full ruby \
-          mysql-server mongodb-org mongodb-org-server nginx nginx-common packages-microsoft-prod \
-          linux-cloud-tools-common kubectl google-chrome-stable x11proto-core-dev x11proto-dev perl \
-          unixodbc unixodbc-dev vim-common x11-common
-        sudo apt autoremove -y
-        sudo apt autoclean -y
         sudo rm -rf /usr/local/lib/android
-        docker rmi $(docker image ls -aq)
+#        docker rmi $(docker image ls -aq)
+#         sudo apt remove -y \
+#          alsa-topology-conf alsa-ucm-conf \
+#          adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot \
+#          ant apache2 aspnetcore-runtime-3.1 aspnetcore-runtime-5.0 aspnetcore-targeting-pack-3.1 aspnetcore-targeting-pack-5.0 azure-cli \
+#          clang-10 clang-11 clang-9 cpp-10 cpp-9 cpp g++-10 g++-9 g++ gcc-10 gcc-9 gcc ghc-9.0.1 ghc-8.10.4 gh \
+#          javascript-common libmono-system-core4.0-cil mono-runtime-common llvm-9-runtime llvm-10-runtime llvm-11-runtime mercurial \
+#          php7.4-common php8.0-common php8.0 php7.4 postgresql-13 postgresql-client-common postgresql python2 python3 ruby-full ruby \
+#          mysql-server mongodb-org mongodb-org-server nginx nginx-common packages-microsoft-prod \
+#          linux-cloud-tools-common kubectl google-chrome-stable x11proto-core-dev x11proto-dev perl \
+#          unixodbc unixodbc-dev vim-common x11-common
+#        sudo apt autoremove -y
+#        sudo apt autoclean -y
+
     - name: Check new disk space
       run: | 
         df -h
