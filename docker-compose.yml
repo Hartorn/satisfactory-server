@@ -11,10 +11,6 @@ services:
                 STEAMCODE: # STEAM_GUARD_CODE
                 STEAMBETA: "false"
         image: 'ghcr.io/satisfactory-server:latest'
-        # environment:
-        #     - STEAMUSER=
-        #     - STEAMPWD=#
-        #     - STEAMCODE=
         ports:
             - '7777:7777/udp'
         volumes:
