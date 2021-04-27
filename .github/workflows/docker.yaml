@@ -9,6 +9,10 @@ on:
         description: "Steam Guard Code"
         required: False
         default: ""
+      tag:
+        description: "Tag image"
+        required: False
+        default: "latest"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -86,5 +90,5 @@ jobs:
             "steam_password=${{ secrets.STEAM_PASSWORD }}"
             "steam_guard_code=${{ github.event.inputs.STEAM_GUARD_TOKEN }}"
           tags: |
-            eu.gcr.io/${{ secrets.GCP_PROJECT_ID}}/satisfactory-server:latest
-            ghcr.io/hartorn/satisfactory-server:latest
+            eu.gcr.io/${{ secrets.GCP_PROJECT_ID}}/satisfactory-server:${{ github.event.inputs.tag }}
+            ghcr.io/hartorn/satisfactory-server:${{ github.event.inputs.tag }}

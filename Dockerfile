@@ -48,5 +48,7 @@ ENV GAMECONFIGDIR="/home/satisfactory/.wine/drive_c/users/satisfactory/Local Set
 
 EXPOSE 7777/udp
 
+WORKDIR /config/gamefiles
+
 ENTRYPOINT [ "bash", "-c" ]
 CMD ["wine start FactoryGame.exe -nosteamclient -nullrhi -nosplash -nosound && tail -f \"${GAMECONFIGDIR}/Logs/FactoryGame.log\""]
