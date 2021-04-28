@@ -19,7 +19,7 @@ RUN --mount=type=secret,id=steam_user \
     +app_update "${STEAMAPPID}" ${STEAMBETAFLAGS} \
     +quit
 
-FROM ubuntu:20.04
+FROM steamcmd/steamcmd:latest
 
 ENV GAMECONFIGDIR="/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved"
 RUN mkdir -p /config/gamefiles /config/savefiles /config/saves "${GAMECONFIGDIR}/Config/WindowsNoEditor" "${GAMECONFIGDIR}/Logs" "${GAMECONFIGDIR}/SaveGames/common"
