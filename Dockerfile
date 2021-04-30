@@ -19,36 +19,33 @@ RUN --mount=type=secret,id=steam_user \
     +app_update "${STEAMAPPID}" ${STEAMBETAFLAGS} \
     +quit
 
-FROM steamcmd/steamcmd:latest
-
-ENV GAMECONFIGDIR="/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved"
+FROM ubuntu:20.04
+ENV GAMECONFIGDIR="/home/satisfactory/.wine/drive_c/users/satisfactory/Local Settings/Application Data/FactoryGame/Saved"
+# ENV GAMECONFIGDIR="/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved"
 RUN mkdir -p /config/gamefiles /config/savefiles /config/saves "${GAMECONFIGDIR}/Config/WindowsNoEditor" "${GAMECONFIGDIR}/Logs" "${GAMECONFIGDIR}/SaveGames/common"
 RUN touch "${GAMECONFIGDIR}/Logs/FactoryGame.log"
 
-RUN set -x \
-    && dpkg --add-architecture i386 \
-    && apt-get update \
-    && apt-get install -y cron sudo wine-stable \
-    && mkdir -p /config \
-    && rm -rf /var/lib/apt/lists/*
-
 RUN useradd -ms /bin/bash satisfactory
 
-COPY Game.ini Engine.ini Scalability.ini /home/satisfactory/
-COPY backup.sh init.sh /
+RUN set -x \
+    && dpkg --add-architecture i386 \
+    && apt update \
+    && apt install -y --no-install-recommends \
+    wine-stable ca-certificates \
+    && rm -rf /var/lib/apt/lists/* 
 
-RUN chmod +x "/backup.sh" "/init.sh"
+COPY Engine.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini"
+COPY Game.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Game.ini"
+COPY Scalability.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Scalability.ini"
 
-# VOLUME /config
-# WORKDIR /config
-
-ENV GAMECONFIGDIR="/home/satisfactory/.wine/drive_c/users/satisfactory/Local Settings/Application Data/FactoryGame/Saved" \
-    STEAMAPPID="526870" \
-    STEAMBETA="false"
+COPY --from=builder /gamefiles /config/gamefiles
 
 EXPOSE 7777/udp
 
-WORKDIR /config/gamefiles
+WORKDIR /home/satisfactory
+RUN chown -R satisfactory:satisfactory /config/gamefiles /home/satisfactory ${GAMECONFIGDIR}
+# RUN chown root:root "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini" "${GAMECONFIGDIR}/Config/WindowsNoEditor/Game.ini"
+USER satisfactory
 
-ENTRYPOINT [ "bash", "-c" ]
+ENTRYPOINT [ "sh ", "-c" ]
 CMD ["wine start FactoryGame.exe -nosteamclient -nullrhi -nosplash -nosound && tail -f \"${GAMECONFIGDIR}/Logs/FactoryGame.log\""]
