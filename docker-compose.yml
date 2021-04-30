@@ -5,14 +5,19 @@ services:
         hostname: 'satisfactory-server'
         build:
             context: .
-            args:
-                STEAMUSER: STEAM_LOGIN
-                STEAMPWD: STEAM_PASSWORD
-                STEAMCODE: # STEAM_GUARD_CODE
-                STEAMBETA: "false"
-        image: 'ghcr.io/satisfactory-server:latest'
+        image: 'eu.gcr.io/rdp-server-dns/satisfactory-server:local'
         ports:
             - '7777:7777/udp'
         volumes:
             - './savefiles:/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved/common'
+secrets:
+    steam_user:
+        file: ./secrets/steam_user
+    steam_password:
+        file: ./secrets/steam_password
+    steam_guard_code:
+        file: ./secrets/steam_guard_code
         # restart: unless-stopped
+# export DOCKER_BUILDKIT=1
+# export COMPOSE_DOCKER_CLI_BUILD=1
+#https://pythonspeed.com/articles/build-secrets-docker-compose/

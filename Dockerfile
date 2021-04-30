@@ -20,7 +20,7 @@ RUN --mount=type=secret,id=steam_user \
     +app_update "${STEAMAPPID}" ${STEAMBETAFLAGS} \
     +quit
 
-FROM ubuntu:20.04
+FROM steamcmd/steamcmd:latest
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV GAMECONFIGDIR="/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved"
@@ -30,11 +30,12 @@ RUN touch "${GAMECONFIGDIR}/Logs/FactoryGame.log"
 RUN set -x \
     && dpkg --add-architecture i386 \
     && apt-get update \
-    && apt-get install -y wine-stable \
+    && apt-get install -y wine-stable ca-certificates locales lib32gcc1 libstdc++6 libstdc++6:i386 \
     && mkdir -p /config \
     && rm -rf /var/lib/apt/lists/*
 
-COPY Game.ini Engine.ini Scalability.ini /home/satisfactory/
+COPY Game.ini Engine.ini Scalability.ini ${GAMECONFIGDIR}/Config/WindowsNoEditor/
+COPY --from=builder /gamefiles /config/gamefiles
 
 EXPOSE 7777/udp
 
