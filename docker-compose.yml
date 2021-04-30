@@ -14,5 +14,5 @@ services:
         ports:
             - '7777:7777/udp'
         volumes:
-            - './local-game/savefiles:/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved/common'
+            - './savefiles:/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved/common'
         # restart: unless-stopped

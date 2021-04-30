@@ -2,6 +2,7 @@
 
 FROM steamcmd/steamcmd:latest AS builder
 ARG STEAMBETA
+ENV DEBIAN_FRONTEND noninteractive
 
 ENV STEAMAPPID 526870
 
@@ -20,31 +21,20 @@ RUN --mount=type=secret,id=steam_user \
     +quit
 
 FROM ubuntu:20.04
+ENV DEBIAN_FRONTEND noninteractive
 
 ENV GAMECONFIGDIR="/root/.wine/drive_c/users/root/Local Settings/Application Data/FactoryGame/Saved"
-RUN mkdir -p /config/gamefiles /config/savefiles /config/saves "${GAMECONFIGDIR}/Config/WindowsNoEditor" "${GAMECONFIGDIR}/Logs" "${GAMECONFIGDIR}/SaveGames/common"
+RUN mkdir -p /config/gamefiles "${GAMECONFIGDIR}/Config/WindowsNoEditor" "${GAMECONFIGDIR}/Logs" "${GAMECONFIGDIR}/SaveGames/common"
 RUN touch "${GAMECONFIGDIR}/Logs/FactoryGame.log"
 
 RUN set -x \
     && dpkg --add-architecture i386 \
     && apt-get update \
-    && apt-get install -y cron sudo wine-stable \
+    && apt-get install -y wine-stable \
     && mkdir -p /config \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -ms /bin/bash satisfactory
-
 COPY Game.ini Engine.ini Scalability.ini /home/satisfactory/
-COPY backup.sh init.sh /
-
-RUN chmod +x "/backup.sh" "/init.sh"
-
-# VOLUME /config
-# WORKDIR /config
-
-ENV GAMECONFIGDIR="/home/satisfactory/.wine/drive_c/users/satisfactory/Local Settings/Application Data/FactoryGame/Saved" \
-    STEAMAPPID="526870" \
-    STEAMBETA="false"
 
 EXPOSE 7777/udp
 
