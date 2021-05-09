@@ -31,7 +31,7 @@ RUN set -x \
     && dpkg --add-architecture i386 \
     && apt update \
     && apt install -y --no-install-recommends \
-    wine-stable ca-certificates \
+    wine-stable winbind ca-certificates \
     && rm -rf /var/lib/apt/lists/* 
 
 COPY Engine.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini"
