@@ -44,8 +44,11 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           docker rmi $(docker image ls -aq)
           sudo apt remove -y \
-            clang-10 clang-11 clang-9 cpp-10 cpp-9 cpp g++-10 g++-9 g++ gcc-10 gcc-9 gcc ghc-9.0.1 ghc-8.10.4 gh \
-            mono-runtime-common llvm-9-runtime llvm-10-runtime llvm-11-runtime mercurial
+           alsa-topology-conf alsa-ucm-conf \
+           adoptopenjdk-11-hotspot adoptopenjdk-8-hotspot \
+           ant apache2 aspnetcore-runtime-3.1 aspnetcore-runtime-5.0 aspnetcore-targeting-pack-3.1 aspnetcore-targeting-pack-5.0 azure-cli \
+           clang-10 clang-11 clang-9 cpp-10 cpp-9 cpp g++-10 g++-9 g++ gcc-10 gcc-9 gcc ghc-9.0.1 ghc-8.10.4 gh \
+           mono-runtime-common llvm-9-runtime llvm-10-runtime llvm-11-runtime mercurial
           sudo apt autoremove -y
           sudo apt autoclean -y
         # alsa-topology-conf alsa-ucm-conf \
