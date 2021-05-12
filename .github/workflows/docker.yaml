@@ -35,7 +35,7 @@ jobs:
           df -h
       - name: List installed packages
         run: |
-          apt list --installed
+          dpkg-query --show --showformat='${Installed-Size}\t${Package}\n' | sort -rh | head -25 | awk '{print $1/1024, $2}'
           apt list --installed | wc -l
       - name: Free disk space
         run: |
@@ -66,7 +66,7 @@ jobs:
           df -h
       - name: List remaning installed packages
         run: |
-          apt list --installed
+          dpkg-query --show --showformat='${Installed-Size}\t${Package}\n' | sort -rh | head -25 | awk '{print $1/1024, $2}'
           apt list --installed | wc -l
       - name: Checkout
         uses: actions/checkout@v2
