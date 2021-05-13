@@ -34,16 +34,16 @@ RUN set -x \
     wine-stable winbind ca-certificates \
     && rm -rf /var/lib/apt/lists/* 
 
-COPY Engine.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini"
-COPY Game.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Game.ini"
-COPY Scalability.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Scalability.ini"
+COPY --chown=satisfactory:satisfactory Engine.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini"
+COPY --chown=satisfactory:satisfactory Game.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Game.ini"
+COPY --chown=satisfactory:satisfactory Scalability.ini "${GAMECONFIGDIR}/Config/WindowsNoEditor/Scalability.ini"
 
-COPY --from=builder /gamefiles /config/gamefiles
+COPY --chown=satisfactory:satisfactory --from=builder /gamefiles /config/gamefiles
 
 EXPOSE 7777/udp
 
 WORKDIR /home/satisfactory
-RUN chown -R satisfactory:satisfactory /config/gamefiles /home/satisfactory ${GAMECONFIGDIR}
+RUN chown -R satisfactory:satisfactory /home/satisfactory ${GAMECONFIGDIR}
 # RUN chown root:root "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini" "${GAMECONFIGDIR}/Config/WindowsNoEditor/Game.ini"
 USER satisfactory
 
