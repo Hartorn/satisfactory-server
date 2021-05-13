@@ -43,7 +43,7 @@ COPY --chown=satisfactory:satisfactory --from=builder /gamefiles /config/gamefil
 EXPOSE 7777/udp
 
 WORKDIR /home/satisfactory
-RUN chown -R satisfactory:satisfactory /home/satisfactory ${GAMECONFIGDIR}
+RUN chown -R satisfactory:satisfactory /home/satisfactory "${GAMECONFIGDIR}"
 # RUN chown root:root "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini" "${GAMECONFIGDIR}/Config/WindowsNoEditor/Game.ini"
 USER satisfactory
 
