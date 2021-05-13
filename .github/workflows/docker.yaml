@@ -49,9 +49,6 @@ jobs:
            ant apache2 aspnetcore-runtime-3.1 aspnetcore-runtime-5.0 aspnetcore-targeting-pack-3.1 aspnetcore-targeting-pack-5.0 azure-cli \
            clang-10 clang-11 clang-9 cpp-10 cpp-9 cpp g++-10 g++-9 g++ gcc-10 gcc-9 gcc ghc-9.0.1 ghc-8.10.4 gh libllvm10 linux-azure-headers-5.4.0-1046 \
            azure-cli hhvm libgl1-mesa-dri google-chrome-stable firefox powershell snapd mysql-server-core-8.0 mono-devel libllvm11 mongodb-org-server \
-           php7.4-common php8.0-common php8.0 php7.4 postgresql-13 postgresql-client-common postgresql python2 python3 ruby-full ruby \
-           mysql-server mongodb-org mongodb-org-server nginx nginx-common packages-microsoft-prod \
-           linux-cloud-tools-common kubectl google-chrome-stable x11proto-core-dev x11proto-dev \
            mono-runtime-common llvm-9-runtime llvm-10-runtime llvm-11-runtime mercurial libllvm9 mongodb-org-mongos mongodb-org-shell
           sudo apt autoremove -y
           sudo apt autoclean -y
