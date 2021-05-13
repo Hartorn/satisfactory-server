@@ -47,5 +47,5 @@ RUN chown -R satisfactory:satisfactory /home/satisfactory "${GAMECONFIGDIR}"
 # RUN chown root:root "${GAMECONFIGDIR}/Config/WindowsNoEditor/Engine.ini" "${GAMECONFIGDIR}/Config/WindowsNoEditor/Game.ini"
 USER satisfactory
 
-ENTRYPOINT [ "sh ", "-c" ]
+ENTRYPOINT [ "sh", "-c" ]
 CMD ["wine start FactoryGame.exe -nosteamclient -nullrhi -nosplash -nosound && tail -f \"${GAMECONFIGDIR}/Logs/FactoryGame.log\""]
